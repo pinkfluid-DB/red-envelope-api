@@ -16,4 +16,7 @@ def get_hotels():
     return jsonify([h for h in hotels if h["city"] == city])
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    print(f"Starting Flask API on port {port}")  # 這行會印出伺服器啟動狀態
+    app.run(host='0.0.0.0', port=port)
