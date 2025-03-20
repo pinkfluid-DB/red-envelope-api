@@ -8,27 +8,27 @@
 <body>
     <h1>紅包計算機</h1>
     
-    <label for="city">選擇城市：</label>
+    <label for="city">選擇城市:</label>
     <select id="city" onchange="fetchHotels()">
         <option value="">請選擇</option>
         <option value="台北">台北</option>
         <option value="高雄">高雄</option>
     </select>
     
-    <label for="hotel">選擇飯店：</label>
+    <label for="hotel">選擇飯店:</label>
     <select id="hotel">
         <option value="">請先選擇城市</option>
     </select>
     
-    <label for="people">人數：</label>
+    <label for="people">人數:</label>
     <input type="number" id="people" value="1" min="1">
     
-    <label for="extra">額外金額：</label>
+    <label for="extra">額外金額:</label>
     <input type="number" id="extra" value="0" min="0">
     
     <button onclick="calculateRedEnvelope()">計算紅包金額</button>
     
-    <h2>計算結果：</h2>
+    <h2>計算結果:</h2>
     <p id="result"></p>
     
     <script>
