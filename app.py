@@ -7,7 +7,14 @@ app = Flask(__name__)
 CORS(app)
 
 # 連接資料庫（Render 會自動提供 DATABASE_URL）
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///hotels.db")
+import re
+
+# 取得 DATABASE_URL 並處理 render 的 postgres url（去除 postgres:// -> postgresql://）
+db_url = os.environ.get("DATABASE_URL", "sqlite:///hotels.db")
+if db_url.startswith("postgres://"):
+    db_url = re.sub("^postgres://", "postgresql://", db_url)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
