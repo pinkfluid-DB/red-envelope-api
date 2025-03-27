@@ -2,25 +2,13 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import os
+import re
 
 app = Flask(__name__)
 CORS(app)
 
-# 連接資料庫（Render 會自動提供 DATABASE_URL）
-import re
-
-# 取得 DATABASE_URL 並處理 render 的 postgres url（去除 postgres:// -> postgresql://）
-db_url = os.environ.get("DATABASE_URL", "sqlite:///hotels.db")
-if db_url.startswith("postgres://"):
-    db_url = re.sub("^postgres://", "postgresql://", db_url)
-
-import os
-import re
-
-# 原始 DATABASE_URL
+# 🔧 處理 Render 的 DATABASE_URL 格式（必須將 postgres:// 改為 postgresql://）
 raw_db_url = os.environ.get("DATABASE_URL", "sqlite:///hotels.db")
-
-# Render 的 postgres url 格式需要轉換：postgres:// → postgresql://
 if raw_db_url.startswith("postgres://"):
     raw_db_url = re.sub("^postgres://", "postgresql://", raw_db_url)
 
@@ -28,8 +16,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = raw_db_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
+# ✅ 部署時自動建立表格（若尚未存在）
 with app.app_context():
     db.create_all()
+
 
 # 資料表定義
 class Hotel(db.Model):
