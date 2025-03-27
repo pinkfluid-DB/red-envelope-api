@@ -14,7 +14,17 @@ db_url = os.environ.get("DATABASE_URL", "sqlite:///hotels.db")
 if db_url.startswith("postgres://"):
     db_url = re.sub("^postgres://", "postgresql://", db_url)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+import os
+import re
+
+# 原始 DATABASE_URL
+raw_db_url = os.environ.get("DATABASE_URL", "sqlite:///hotels.db")
+
+# Render 的 postgres url 格式需要轉換：postgres:// → postgresql://
+if raw_db_url.startswith("postgres://"):
+    raw_db_url = re.sub("^postgres://", "postgresql://", raw_db_url)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = raw_db_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
