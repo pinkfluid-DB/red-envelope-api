@@ -30,4 +30,18 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
 
+@app.route('/calculate', methods=['POST'])
+def calculate_red_envelope():
+    data = request.json
+    hotel_name = data.get("hotel")
+    people = int(data.get("people", 1))
+    extra = int(data.get("extra", 0))
+
+    # 從資料庫查詢該飯店
+    hotel = Hotel.query.filter_by(name=hotel_name).first()
+    if not hotel:
+        return jsonify({"error": "找不到指定飯店"}), 404
+
+    total = hotel.price * people + extra
+    return jsonify({"total": total})
 
