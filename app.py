@@ -20,6 +20,12 @@ db = SQLAlchemy(app)
 with app.app_context():
     db.create_all()
 
+@app.route('/init-db')
+def init_db():
+    with app.app_context():
+        db.create_all()
+    return "資料表已建立！"
+
 
 # 資料表定義
 class Hotel(db.Model):
